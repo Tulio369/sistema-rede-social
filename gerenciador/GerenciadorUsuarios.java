@@ -16,6 +16,8 @@ public class GerenciadorUsuarios {
         if (usuario == null) throw new UsuarioException("Usuário inválido");
         usuario.setId(proximoId++);
         usuarios.add(usuario);
+        System.out.println("Usuário " + usuario.getNome() + " cadastrado com sucesso! ID: " + usuario.getId());
+
     }
 
     // Método para buscar um usuário por ID
