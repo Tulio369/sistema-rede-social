@@ -127,4 +127,8 @@ public class Usuario {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
+    public String getSenha() {
+        return senha;
+    }
 }
