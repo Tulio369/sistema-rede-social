@@ -8,12 +8,15 @@ import java.util.Scanner;
 public class MenuPrincipal {
     private GerenciadorUsuarios gerenciadorUsuarios = new GerenciadorUsuarios();
     private Scanner scanner = new Scanner(System.in);
+    private Usuario usuarioLogado = null;  // Variável para armazenar o usuário logado
+
 
     public void exibirMenu() {
         while (true) {
             System.out.println("=== Menu Principal ===");
             System.out.println("1. Cadastrar novo usuário");
-            System.out.println("2. Sair");
+            System.out.println("2. Login");
+            System.out.println("3. Sair");
             System.out.print("Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -23,6 +26,9 @@ public class MenuPrincipal {
                     cadastrarUsuario();
                     break;
                 case 2:
+                    loginUsuario();
+                    break;
+                case 3:
                     System.out.println("Saindo...");
                     return;
                 default:
@@ -47,5 +53,25 @@ public class MenuPrincipal {
 
         System.out.println("Usuário cadastrado com sucesso!");
     }
+    private void loginUsuario() {
+        System.out.println("=== Login ===");
+        System.out.print("Digite seu username: ");
+        String username = scanner.nextLine();
+
+        usuarioLogado = gerenciadorUsuarios.buscarPorUsername(username);
+        if (usuarioLogado != null) {
+            System.out.println("Login realizado com sucesso!");
+            exibirMenuLogado();  // Chama o menu do usuário
+        } else {
+            System.out.println("Usuário não encontrado.");
+        }
+    }
+
+    private void exibirMenuLogado() {
+        // Exibe o menu do usuário logado
+        MenuUsuario menuUsuario = new MenuUsuario(usuarioLogado);
+        menuUsuario.exibirMenu();
+    }
 }
+
 

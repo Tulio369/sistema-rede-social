@@ -19,7 +19,9 @@ public class MenuUsuario {
         while (true) {
             System.out.println("=== Menu do Usuário ===");
             System.out.println("1. Criar Post");
-            System.out.println("2. Sair");
+            System.out.println("2. Ver Meu Perfil");
+            System.out.println("3. Gerenciar Amizades");
+            System.out.println("4. Sair");
             System.out.print("Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -29,6 +31,12 @@ public class MenuUsuario {
                     criarPost();
                     break;
                 case 2:
+                    verPerfil();
+                    break;
+                case 3:
+                    gerenciarAmizades();
+                    break;
+                case 4:
                     System.out.println("Saindo...");
                     return;
                 default:
@@ -41,9 +49,28 @@ public class MenuUsuario {
         System.out.println("=== Novo Post ===");
         System.out.print("Digite seu post: ");
         String conteudo = scanner.nextLine();
+
+        // Cria o novo post
         Post novoPost = new Post(usuarioLogado, conteudo);
-        gerenciadorPosts.criar(novoPost);
+
+        // Adiciona o post à lista de posts do usuário logado
+        usuarioLogado.adicionarPost(novoPost);
+
         System.out.println("Post publicado com sucesso!");
+    }
+
+    private void verPerfil() {
+        System.out.println("=== Perfil de " + usuarioLogado.getUsername() + " ===");
+        System.out.println("Nome: " + usuarioLogado.getNome());
+        System.out.println("Email: " + usuarioLogado.getEmail());
+        System.out.println("Data de Cadastro: " + usuarioLogado.getDataCadastro());
+        System.out.println("Número de posts: " + usuarioLogado.getPosts().size());
+        System.out.println("Número de amigos: " + usuarioLogado.getAmigos().size());
+    }
+
+    private void gerenciarAmizades() {
+        // Aqui você pode implementar a adição e remoção de amigos.
+        System.out.println("Gerenciar Amizades");
     }
 }
 
