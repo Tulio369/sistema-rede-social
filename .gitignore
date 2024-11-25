@@ -1,0 +1,25 @@
+# Ignorar arquivos de build
+/build/
+*.o
+*.a
+*.so
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar diretórios de configurações pessoais
+.vscode/
+.idea/
+
+# Ignorar arquivos sensíveis
+*.env
+
+# Diretório de configuração do projeto
+out/
+
+# Arquivos de configuração do sistema
+.DS_Store
+
+
+# Diretórios usados por outras ferramentas, se existirem
+.idea/runConfigurations/
