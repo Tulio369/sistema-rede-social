@@ -3,6 +3,7 @@ package modelo;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Usuario {
     private Integer id;
@@ -43,15 +44,17 @@ public class Usuario {
     public void removerAmigo(Usuario amigo) {
         if (amigos.contains(amigo)) {
             amigos.remove(amigo);
-            amigo.getAmigos().remove(this);  // Remover a amizade do outro lado
+            amigo.getAmigos().remove(this);  // Remover a amizade
         }
     }
 
+    // Getters e Setters
     public List<Usuario> getAmigos() {
         return amigos;
     }
 
-    // Getters e Setters
+    public void setAmigos(List<Usuario> amigos) {this.amigos = amigos;}
+
     public Integer getId() {
         return id;
     }
@@ -120,12 +123,12 @@ public class Usuario {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Usuario usuario = (Usuario) obj;
-        return id != null && id.equals(usuario.id);
+        return Objects.equals(id,usuario.id);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return Objects.hashCode(id);
     }
 
     public String getSenha() {
