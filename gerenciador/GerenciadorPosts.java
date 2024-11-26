@@ -1,6 +1,7 @@
 package gerenciador;
 
 import modelo.Post;
+import modelo.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +24,13 @@ public class GerenciadorPosts {
         }
         return postsUsuario;
     }
+    public void curtir(int idPost, int idusuario) {
+        Post post = buscarPorId(idPost);
+        Usuario usuario = new  GerenciadorUsuarios().buscarPorId(idusuario);
+        if(post != null && usuario != null) {
+            post.adicinarCurtida(usuario);
+        }
+    }
+
 }
 
