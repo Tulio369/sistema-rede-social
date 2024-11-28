@@ -1,8 +1,7 @@
-package gerenciador;
+package com.redesocial.gerenciador;
 
 import com.redesocial.modelo.Usuario;
-import modelo.Comentario;
-import exception.UsuarioException;
+import com.redesocial.exception.UsuarioException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,10 @@ public class GerenciadorUsuarios {
 
     // Método para buscar um usuário por ID
     public Usuario buscarPorId(int id) {
-        return usuarios.stream().filter(u -> u.getId().equals(id)).findFirst().orElse(null);
+        return usuarios.stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElse(null);  // Retorna null se não encontrar
     }
 
     // Método para buscar um usuário por nome de usuário (username)

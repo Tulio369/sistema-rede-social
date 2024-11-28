@@ -1,4 +1,4 @@
-package modelo;
+package com.redesocial.modelo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ public class Usuario {
     private String email;
     private String senha;
     private LocalDateTime dataCadastro;
-    private List<Usuario> amigos = new ArrayList<>();
-    private List<Post> posts = new ArrayList<>();
+    private List<Usuario> amigos;
+    private List<Post> posts;   // Lista de posts deve ser inicializada
 
     // Construtor
     public Usuario(String nome, String username, String email, String senha) {
@@ -22,6 +22,8 @@ public class Usuario {
         this.email = email;
         this.senha = senha;
         this.dataCadastro = LocalDateTime.now();
+        this.amigos = new ArrayList<>();  // Inicializando a lista de amigos
+        this.posts = new ArrayList<>();   // Inicializando a lista de posts
     }
 
     // Métodos para adicionar e gerenciar posts
@@ -29,8 +31,8 @@ public class Usuario {
         posts.add(post);
     }
 
-    public List<Post> getPosts() {
-        return posts;
+    public <Post> List<Post> getPosts() {
+        return (List<Post>) posts;
     }
 
     // Métodos para gerenciar amigos

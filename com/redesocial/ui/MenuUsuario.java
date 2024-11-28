@@ -1,8 +1,8 @@
-package ui;
+package com.redesocial.ui;
 
-import gerenciador.GerenciadorUsuarios;
-import modelo.Post;
-import modelo.Usuario;
+import com.redesocial.gerenciador.GerenciadorUsuarios;
+import com.redesocial.modelo.Post;
+import com.redesocial.modelo.Usuario;
 
 import java.util.Scanner;
 
@@ -116,7 +116,7 @@ public class MenuUsuario {
             if (!usuarioLogado.getAmigos().contains(amigo)) {
                 usuarioLogado.adicionarAmigo(amigo);  // Adiciona a amizade
                 amigo.adicionarAmigo(usuarioLogado);  // Adiciona a amizade no amigo também
-                System.out.println("Amigo adicionado com sucesso!");
+                System.out.println("Amigo adicionado com sucesso!" + amigo.getNome());
             } else {
                 System.out.println("Você já é amigo deste usuário.");
             }

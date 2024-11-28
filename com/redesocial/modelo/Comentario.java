@@ -1,7 +1,4 @@
-package modelo;
-
-import com.redesocial.modelo.Post;
-import com.redesocial.modelo.Usuario;
+package com.redesocial.modelo;
 
 import java.time.LocalDateTime;
 import java.util.List;
