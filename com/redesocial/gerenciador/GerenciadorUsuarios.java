@@ -1,6 +1,7 @@
 package gerenciador;
 
-import modelo.Usuario;
+import com.redesocial.modelo.Usuario;
+import modelo.Comentario;
 import exception.UsuarioException;
 
 import java.util.ArrayList;
