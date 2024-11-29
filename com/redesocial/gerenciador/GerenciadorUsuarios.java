@@ -1,15 +1,21 @@
-package gerenciador;
+package com.redesocial.gerenciador;
 
-import modelo.Usuario;
-import exception.UsuarioException;
+import com.redesocial.modelo.Usuario;
+import com.redesocial.exception.UsuarioException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 public class GerenciadorUsuarios {
-    private List<Usuario> usuarios = new ArrayList<>();
-    private int proximoId = 1;
+    private List<Usuario> usuarios;
+    private int proximoId;
+    public GerenciadorUsuarios() {
+        this.usuarios = new ArrayList<>();
+        this.proximoId = 1;
+    }
 
     // Método para cadastrar um novo usuário
     public void cadastrar(Usuario usuario) {
@@ -22,7 +28,10 @@ public class GerenciadorUsuarios {
 
     // Método para buscar um usuário por ID
     public Usuario buscarPorId(int id) {
-        return usuarios.stream().filter(u -> u.getId().equals(id)).findFirst().orElse(null);
+        return usuarios.stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElse(null);  // Retorna null se não encontrar
     }
 
     // Método para buscar um usuário por nome de usuário (username)
@@ -32,13 +41,12 @@ public class GerenciadorUsuarios {
 
     // Método para buscar usuários pelo nome
     public List<Usuario> buscarPorNome(String nome) {
-        List<Usuario> resultado = new ArrayList<>();
-        for (Usuario u : usuarios) {
-            if (u.getNome().toLowerCase().contains(nome.toLowerCase())) {
-                resultado.add(u);
-            }
-        }
-        return resultado;
+        return usuarios.stream().filter(u -> u.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
+    }
+
+    // Método para atualizar informações de um usuário
+    public boolean atualizar() {
+        return atualizar(null);
     }
 
     // Método para atualizar informações de um usuário
