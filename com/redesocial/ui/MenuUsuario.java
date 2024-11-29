@@ -63,6 +63,9 @@ public class MenuUsuario {
         }
     }
 
+    private void buscarUsuarios() {
+    }
+
     private void criarPost() {
         System.out.println("=== Novo Post ===");
         System.out.print("Digite seu post: ");
@@ -88,16 +91,20 @@ public class MenuUsuario {
     }
 
     private void gerenciarAmizades() {
-        while (true) {
+        int opcao = -1;
+        do {
             System.out.println("=== Gerenciar Amizades ===");
             System.out.println("1. Adicionar Amigo");
             System.out.println("2. Ver Meus Amigos");
             System.out.println("3. Remover Amigo");
             System.out.println("4. Voltar");
             System.out.print("Escolha uma opção: ");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();  // Consumir a nova linha
-
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida! Por favor, insira um número.");
+                continue;
+            }
             switch (opcao) {
                 case 1:
                     adicionarAmigo();
@@ -113,7 +120,7 @@ public class MenuUsuario {
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
-        }
+        }while (opcao != 0);
     }
     private void editarPerfil() {
         System.out.println("=== Editar Perfil ===");
@@ -210,7 +217,6 @@ public class MenuUsuario {
             System.out.println("Você não pode adicionar a si mesmo como amigo.");
             return;
         }
-
         // Busca o usuário pelo ID
         Usuario amigo = gerenciadorUsuarios.buscarPorId(idAmigo);
 
@@ -234,10 +240,10 @@ public class MenuUsuario {
 
     private void verAmigos() {
         System.out.println("=== Meus Amigos ===");
-        if (usuarioLogado.getAmigos().isEmpty()) {
+        if (usuario.getAmigos().isEmpty()) {
             System.out.println("Você não tem amigos.");
         } else {
-            for (Usuario amigo : usuarioLogado.getAmigos()) {
+            for (Usuario amigo : usuario.getAmigos()) {
                 System.out.println("ID: " + amigo.getId() + " - Nome: " + amigo.getNome());
             }
         }
@@ -252,12 +258,117 @@ public class MenuUsuario {
         Usuario amigo = gerenciadorUsuarios.buscarPorId(idAmigo);
 
         // Verifica se o amigo existe e se está na lista de amigos
-        if (amigo != null && usuarioLogado.getAmigos().contains(amigo)) {
-            usuarioLogado.removerAmigo(amigo);  // Remove a amizade
+        if (amigo != null && usuario.getAmigos().contains(amigo)) {
+            usuario.removerAmigo(amigo);  // Remove a amizade
             System.out.println("Amigo removido com sucesso!");
         } else {
             System.out.println("Amigo não encontrado ou você não é amigo deste usuário.");
         }
     }
+    private void verFeedNoticias() {
+        System.out.println("=== Feed de Notícias ===");
+
+        // Obter o feed (posts do usuário logado e dos amigos)
+        List<Post> feed = gerenciadorPosts.listarPorUsuario(usuario.getId());
+        for (Usuario amigo : usuario.getAmigos()) {
+            feed.addAll(gerenciadorPosts.listarPorUsuario(amigo.getId()));
+        }
+
+        // Ordenar os posts do feed por data de publicação (mais recente primeiro)
+        feed.sort((p1, p2) -> p2.getDataPublicacao().compareTo(p1.getDataPublicacao()));
+
+        if (feed.isEmpty()) {
+            System.out.println("Nenhuma postagem no feed.");
+        } else {
+            for (Post post : feed) {
+                System.out.println("\n=== Post ===");
+                System.out.println("Autor: " + post.getAutor().getNome());
+                System.out.println("Data: " + post.getDataPublicacao());
+                System.out.println("Conteúdo: " + post.getConteudo());
+                System.out.println("Curtidas: " + post.getCurtidas().size());
+                System.out.println("Comentários: " + post.getComentarios().size());
+
+                // Opções de interação
+                System.out.print("Deseja interagir com este post? \n(1 - Curtir, 2 - Comentar, 3 - Remover Curtida, 4 - Remover Comentário, 0 - Ignorar): ");
+                int acao = scanner.nextInt();
+                scanner.nextLine(); // Consumir a linha restante
+
+                switch (acao) {
+                    case 1 -> curtirPost(post);
+                    case 2 -> comentarPost(post);
+                    case 3 -> removerCurtida(post);
+                    case 4 -> removerComentario(post);
+                    case 0 -> System.out.println("Ignorando post...");
+                    default -> System.out.println("Opção inválida.");
+                }
+            }
+        }
+    }
+
+    // Método para curtir um post
+    private void curtirPost(Post post) {
+        if (!post.getCurtidas().contains(usuario)) {
+            post.adicionarCurtida(usuario);
+            System.out.println("Você curtiu o post!");
+        } else {
+            System.out.println("Você já curtiu este post.");
+        }
+    }
+
+    // Método para remover curtida de um post
+    private void removerCurtida(Post post) {
+        if (post.getCurtidas().contains(usuario)) {
+            post.removerCurtida(usuario);
+            System.out.println("Você removeu sua curtida.");
+        } else {
+            System.out.println("Você ainda não curtiu este post.");
+        }
+    }
+
+    // Método para comentar em um post
+    private void comentarPost(Post post) {
+        System.out.print("Digite seu comentário: ");
+        String conteudo = scanner.nextLine();
+        Comentario comentario = new Comentario(usuario, conteudo, post);
+        post.adicionarComentario(comentario);
+        System.out.println("Comentário adicionado!");
+    }
+
+    // Método para remover um comentário
+    private void removerComentario(Post post) {
+        List<Comentario> comentarios = post.getComentarios();
+
+        if (comentarios.isEmpty()) {
+            System.out.println("Este post não possui comentários.");
+            return;
+        }
+
+        System.out.println("Seus comentários:");
+        for (int i = 0; i < comentarios.size(); i++) {
+            Comentario comentario = comentarios.get(i);
+            if (comentario.getAutor().equals(usuario)) {
+                System.out.println(i + 1 + ". " + comentario.getConteudo());
+            }
+        }
+
+        System.out.print("Escolha o número do comentário que deseja remover ou 0 para cancelar: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine(); // Consumir a quebra de linha
+
+        if (opcao > 0 && opcao <= comentarios.size()) {
+            Comentario comentarioARemover = comentarios.get(opcao - 1);
+            if (comentarioARemover.getAutor().equals(usuario)) {
+                post.getComentarios().remove(comentarioARemover);
+                System.out.println("Comentário removido com sucesso.");
+            } else {
+                System.out.println("Você só pode remover seus próprios comentários.");
+            }
+        } else if (opcao == 0) {
+            System.out.println("Cancelado.");
+        } else {
+            System.out.println("Opção inválida.");
+        }
+    }
 }
+
 

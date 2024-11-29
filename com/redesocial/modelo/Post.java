@@ -15,6 +15,13 @@ public class Post {
 
     // Construtor
     public Post(Usuario autor, String conteudo) {
+        if (conteudo == null || conteudo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Conteúdo do post não pode ser vazio.");
+        }
+
+        if (conteudo.length() > 500) {
+            throw new IllegalArgumentException("Conteúdo do post não pode ter mais de 100 caracteres.");
+        }
         this.id = contadorId++;  // Atribui o próximo ID disponível
         this.autor = autor;
         this.conteudo = conteudo;
@@ -33,11 +40,11 @@ public class Post {
         this.id = id;
     }
 
-    public static int getContadorId() {
+    public Integer getContadorId() {
         return contadorId;
     }
 
-    public static void setContadorId(int contadorId) {
+    public void setContadorId(int contadorId) {
         Post.contadorId = contadorId;
     }
 
@@ -54,33 +61,25 @@ public class Post {
     }
 
     public void setConteudo(String conteudo) {
+        if (conteudo == null || conteudo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Conteúdo do post não pode ser vazio.");
+        }
+
+        if (conteudo.length() > 500) {
+            throw new IllegalArgumentException("Conteúdo do post não pode ter mais de 500 caracteres.");
+        }
+
         this.conteudo = conteudo;
     }
-
     public LocalDateTime getDataPublicacao() {
         return dataPublicacao;
     }
-
-    public void setDataPublicacao(LocalDateTime dataPublicacao) {
-        this.dataPublicacao = dataPublicacao;
-    }
-
     public List<Usuario> getCurtidas() {
         return curtidas;
     }
-
-    public void setCurtidas(List<Usuario> curtidas) {
-        this.curtidas = curtidas;
-    }
-
     public List<Comentario> getComentarios() {
         return comentarios;
     }
-
-    public void setComentarios(List<Comentario> comentarios) {
-        this.comentarios = comentarios;
-    }
-
     // Método para exibir informações básicas do post
     @Override
     public String toString() {
@@ -101,13 +100,21 @@ public class Post {
             System.out.println(usuario.getNome() + " já curtiu este post.");
         }
     }
+    public void removerCurtida(Usuario usuario) {
+        curtidas.remove(usuario);
+    }
+    
 
     // Método para adicionar um comentário ao post
     public void adicionarComentario(Comentario comentario) {
         comentarios.add(comentario);
         System.out.println("Comentário adicionado: " + comentario.getConteudo());
     }
-
+    
+    public void removerComentario(Comentario comentario) {
+        comentarios.remove(comentario);
+    }
 }
+
 
 
