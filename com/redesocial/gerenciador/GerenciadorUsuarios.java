@@ -6,10 +6,16 @@ import com.redesocial.exception.UsuarioException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 public class GerenciadorUsuarios {
-    private List<Usuario> usuarios = new ArrayList<>();
-    private int proximoId = 1;
+    private List<Usuario> usuarios;
+    private int proximoId;
+    public GerenciadorUsuarios() {
+        this.usuarios = new ArrayList<>();
+        this.proximoId = 1;
+    }
 
     // Método para cadastrar um novo usuário
     public void cadastrar(Usuario usuario) {
