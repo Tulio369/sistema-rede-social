@@ -41,13 +41,12 @@ public class GerenciadorUsuarios {
 
     // Método para buscar usuários pelo nome
     public List<Usuario> buscarPorNome(String nome) {
-        List<Usuario> resultado = new ArrayList<>();
-        for (Usuario u : usuarios) {
-            if (u.getNome().toLowerCase().contains(nome.toLowerCase())) {
-                resultado.add(u);
-            }
-        }
-        return resultado;
+        return usuarios.stream().filter(u -> u.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
+    }
+
+    // Método para atualizar informações de um usuário
+    public boolean atualizar() {
+        return atualizar(null);
     }
 
     // Método para atualizar informações de um usuário

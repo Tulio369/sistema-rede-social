@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Representa um usuário da rede social.
+ */
 public class Usuario {
     private Integer id;
     private String nome;
@@ -15,7 +18,13 @@ public class Usuario {
     private List<Usuario> amigos;
     private List<Post> posts;   // Lista de posts deve ser inicializada
 
-    // Construtor
+    /**
+     * Construtor da classe Usuario.
+     * @param nome Nome do usuário.
+     * @param username Nome de usuário (username) único.
+     * @param email Email do usuário.
+     * @param senha Senha do usuário.
+     */
     public Usuario(String nome, String username, String email, String senha) {
         this.nome = nome;
         this.username = username;
@@ -36,13 +45,20 @@ public class Usuario {
     }
 
     // Métodos para gerenciar amigos
+    /**
+     * Adiciona um amigo à lista de amigos do usuário.
+     * @param amigo O usuário a ser adicionado como amigo.
+     */
     public void adicionarAmigo(Usuario amigo) {
-        if (!amigos.contains(amigo) && !amigo.equals(this)) {
+        if (!amigos.contains(amigo)){
             amigos.add(amigo);
             amigo.getAmigos().add(this);  // Amizade mútua
         }
     }
-
+    /**
+     * Remove um amigo da lista de amigos do usuário.
+     * @param amigo O usuário a ser removido da lista de amigos.
+     */
     public void removerAmigo(Usuario amigo) {
         if (amigos.contains(amigo)) {
             amigos.remove(amigo);
@@ -54,9 +70,6 @@ public class Usuario {
     public List<Usuario> getAmigos() {
         return amigos;
     }
-
-    public void setAmigos(List<Usuario> amigos) {this.amigos = amigos;}
-
     public Integer getId() {
         return id;
     }
@@ -76,11 +89,6 @@ public class Usuario {
     public String getUsername() {
         return username;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -90,21 +98,15 @@ public class Usuario {
     }
 
     // Não há um getter público para senha, apenas um setter
+
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-    // Validação de senha
-    public boolean validarSenha(String senha) {
-        return this.senha.equals(senha);
-    }
-
     public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
-
-    public void setDataCadastro(LocalDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public List<Post> getPosts() {
+        return posts;
     }
 
     // Método toString para exibir informações do usuário
